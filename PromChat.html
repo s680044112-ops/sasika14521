@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ตารางพรหมชาติประจำปีเกิด</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&family=Charm:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body {
+            font-family: 'Sarabun', sans-serif;
+            background: linear-gradient(135deg, #1a0202 0%, #3a0808 50%, #1f0000 100%);
+            color: #fce8cd;
+            min-height: 100vh;
+        }
+
+        .font-thai-title {
+            font-family: 'Charm', cursive;
+        }
+
+        /* Thai Gold & Red Gradients */
+        .gold-gradient-text {
+            background: linear-gradient(180deg, #fff2a3 0%, #f1a80a 50%, #995c00 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .gold-border {
+            border: 2px solid #d4af37;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+        }
+
+        /* Wheel Container */
+        .promchat-wheel-container {
+            position: relative;
+            width: 100%;
+            max-width: 580px;
+            height: 580px;
+            margin: 0 auto;
+            border-radius: 50%;
+            background: radial-gradient(circle, #5c0a0a 0%, #2a0303 70%, #150000 100%);
+            border: 8px solid #d4af37;
+            box-shadow: 0 0 35px rgba(212, 175, 55, 0.4), inset 0 0 25px rgba(0,0,0,0.8);
+        }
+
+        @media (max-width: 640px) {
+            .promchat-wheel-container {
+                max-width: 340px;
+                height: 340px;
+                border-width: 4px;
+            }
+        }
+
+        /* Center Info Box */
+        .promchat-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 48%;
+            height: 48%;
+            border-radius: 50%;
+            border: 3px double #d4af37;
+            background: rgba(20, 2, 2, 0.92);
+            box-shadow: 0 0 20px rgba(0,0,0,0.8), inset 0 0 15px rgba(212, 175, 55, 0.2);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 10px;
+            z-index: 10;
+        }
+
+        /* Slot Item */
+        .wheel-slot {
+            position: absolute;
+            width: 75px;
+            height: 75px;
+            margin-left: -37.5px;
+            margin-top: -37.5px;
+            border-radius: 50%;
+            background: rgba(45, 5, 5, 0.85);
+            border: 2px solid #a87b2a;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.4s ease;
+            cursor: pointer;
+            z-index: 5;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+        }
+
+        .wheel-slot:hover {
+            border-color: #ffe875;
+            transform: scale(1.1);
+            background: rgba(90, 15, 15, 0.95);
+        }
+
+        @media (max-width: 640px) {
+            .wheel-slot {
+                width: 48px;
+                height: 48px;
+                margin-left: -24px;
+                margin-top: -24px;
+            }
+        }
+
+        /* Active Highlight Effect */
+        .wheel-slot.active-slot {
+            border-color: #ffffff !important;
+            background: radial-gradient(circle, #ff1a1a 0%, #990000 100%) !important;
+            box-shadow: 0 0 25px #ff3333, 0 0 45px #ffd700 !important;
+            transform: scale(1.25) !important;
+            z-index: 20 !important;
+            animation: pulseGlow 1.5s infinite alternate;
+        }
+
+        @keyframes pulseGlow {
+            0% {
+                box-shadow: 0 0 15px #ff3333, 0 0 30px #ffd700;
+            }
+            100% {
+                box-shadow: 0 0 30px #ff6666, 0 0 60px #ffea75, 0 0 10px #ffffff;
+            }
+        }
+
+        /* SVG Wheel Lines */
+        .wheel-svg-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="py-8 px-4 sm:px-6">
+
+    <header class="text-center max-w-3xl mx-auto mb-8">
+        <div class="inline-block p-2 px-6 rounded-full bg-red-950/80 border border-yellow-600/50 mb-3 shadow-lg">
+            <span class="text-yellow-400 font-semibold text-sm tracking-widest"><i class="fa-solid fa-star mr-2"></i>ตำราโบราณชะตาชีวิต</span>
+        </div>
+        <h1 class="text-4xl sm:text-5xl font-bold font-thai-title gold-gradient-text drop-shadow-md mb-2">
+            ตารางพรหมชาติประจำปีเกิด
+        </h1>
+        <p class="text-red-200/80 text-sm sm:text-base">
+            เช็กดวงชะตาตกลง ณ จุดใด ประจำปีนี้ ตามตำราพรหมชาติโบราณ
+        </p>
+    </header>
+
+    <main class="max-w-4xl mx-auto grid grid-cols-1 gap-10">
+
+        <section class="bg-gradient-to-b from-red-950/90 to-red-900/40 p-6 sm:p-8 rounded-2xl gold-border backdrop-blur-sm">
+            <form id="horoscopeForm" class="grid grid-cols-1 sm:grid-cols-3 gap-6 items-end" onsubmit="calculateFortune(event)">
+                
+                <!-- Age Input -->
+                <div>
+                    <label for="ageInput" class="block text-yellow-300 font-medium mb-2 text-sm sm:text-base">
+                        <i class="fa-solid fa-cake-candles mr-2"></i>ระบุอายุปัจจุบัน (ปีเต็ม)
+                    </label>
+                    <input type="number" id="ageInput" min="1" max="120" required placeholder="เช่น 25"
+                        class="w-full bg-red-950/80 border-2 border-yellow-700/60 rounded-xl px-4 py-3 text-white placeholder-red-400/50 focus:outline-none focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/30 text-lg font-bold text-center transition">
+                </div>
+
+                <!-- Gender Select -->
+                <div>
+                    <label class="block text-yellow-300 font-medium mb-2 text-sm sm:text-base">
+                        <i class="fa-solid fa-venus-mars mr-2"></i>เลือกเพศ
+                    </label>
+                    <div class="grid grid-cols-2 gap-3">
+                        <label class="cursor-pointer">
+                            <input type="radio" name="gender" value="male" class="peer hidden" checked>
+                            <div class="p-3 text-center rounded-xl border-2 border-yellow-800/60 bg-red-950/60 text-red-200 peer-checked:bg-yellow-600/30 peer-checked:border-yellow-400 peer-checked:text-yellow-200 font-semibold transition flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-mars text-blue-400"></i> ชาย
+                            </div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="gender" value="female" class="peer hidden">
+                            <div class="p-3 text-center rounded-xl border-2 border-yellow-800/60 bg-red-950/60 text-red-200 peer-checked:bg-yellow-600/30 peer-checked:border-yellow-400 peer-checked:text-yellow-200 font-semibold transition flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-venus text-pink-400"></i> หญิง
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div>
+                    <button type="submit" 
+                        class="w-full bg-gradient-to-r from-yellow-600 via-amber-500 to-yellow-600 hover:from-yellow-500 hover:to-amber-400 text-red-950 font-bold py-3 px-6 rounded-xl shadow-lg shadow-yellow-600/30 hover:shadow-yellow-500/50 transform active:scale-95 transition duration-200 flex items-center justify-center gap-2 text-lg">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i> ทำนายดวงชะตา
+                    </button>
+                </div>
+            </form>
+        </section>
+
+        <section class="flex flex-col items-center justify-center relative my-4">
+            <div class="promchat-wheel-container" id="wheelContainer">
+                
+                <!-- Decorative SVG Lines & Rays -->
+                <svg class="wheel-svg-bg" viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="48" fill="none" stroke="#d4af37" stroke-width="0.5" stroke-dasharray="2,2" opacity="0.5"/>
+                    <circle cx="50" cy="50" r="25" fill="none" stroke="#d4af37" stroke-width="0.8" opacity="0.7"/>
+                </svg>
+
+                <!-- Center Wheel Description -->
+                <div class="promchat-center">
+                    <h3 class="font-thai-title text-yellow-300 text-lg sm:text-2xl font-bold mb-1 leading-tight">
+                        ตำราพรหมชาติ
+                    </h3>
+                    <div class="text-[10px] sm:text-xs text-red-100/90 leading-tight space-y-1">
+                        <p><span class="text-yellow-400 font-bold">ชาย</span> เริ่มต้นจาก <span class="text-amber-300">เจดีย์</span><br>เวียนไปทางขวามือ (ตามเข็ม)</p>
+                        <p><span class="text-pink-300 font-bold">หญิง</span> เริ่มต้นจาก <span class="text-amber-300">เจดีย์</span><br>เวียนไปทางซ้ายมือ (ทวนเข็ม)</p>
+                        <p class="text-yellow-500/80 italic text-[9px] sm:text-[10px] pt-1">ให้นับจนครบอายุปัจจุบันปีนี้</p>
+                    </div>
+                </div>
+
+                <!-- 12 Wheel Slots (Generated Dynamically via JS) -->
+                <div id="slotsWrapper"></div>
+            </div>
+        </section>
+
+        <section id="resultSection" class="hidden transform transition-all duration-500 opacity-0 translate-y-4">
+            <div class="bg-gradient-to-br from-red-950 via-red-900/80 to-black p-6 sm:p-8 rounded-2xl gold-border shadow-2xl relative overflow-hidden">
+                <div class="absolute -right-10 -bottom-10 opacity-10 text-yellow-500 text-9xl pointer-events-none">
+                    <i class="fa-solid fa-dharmachakra"></i>
+                </div>
+
+                <!-- Result Header -->
+                <div class="border-b border-yellow-600/40 pb-4 mb-6 flex flex-wrap items-center justify-between gap-4">
+                    <div>
+                        <span id="resultBadge" class="bg-yellow-500/20 text-yellow-300 text-xs font-semibold px-3 py-1 rounded-full border border-yellow-500/40">
+                            ผลการทำนายดวงชะตา
+                        </span>
+                        <h2 id="resultTitle" class="text-3xl sm:text-4xl font-bold font-thai-title gold-gradient-text mt-1">
+                            ตก "เจดีย์"
+                        </h2>
+                    </div>
+                    <div class="bg-red-950/80 px-4 py-2 rounded-xl border border-yellow-800/50 text-right">
+                        <p class="text-xs text-red-300/80">ข้อมูลผู้ทำนาย</p>
+                        <p id="userInfoSummary" class="text-yellow-200 font-semibold text-sm sm:text-base">ชาย อายุ 25 ปี</p>
+                    </div>
+                </div>
+
+                <!-- Counting Explanation -->
+                <div class="bg-red-950/50 p-4 rounded-xl border border-yellow-900/40 mb-6 text-sm text-yellow-100/90 flex items-start gap-3">
+                    <i class="fa-solid fa-compass text-yellow-400 text-lg mt-0.5"></i>
+                    <div>
+                        <strong class="text-yellow-300">เส้นทางการนับเวียนชะตา:</strong>
+                        <p id="calculationPath" class="mt-0.5 text-red-200/80">
+                            ชายนับเริ่มจากเจดีย์ (1) แล้วเวียนขวาตามเข็มนาฬิกาเป็นจำนวน 25 รอบ/ช่อง ตกที่ "เจดีย์"
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Fortune Text Detail -->
+                <div class="space-y-3">
+                    <h3 class="text-lg font-bold text-yellow-300 flex items-center gap-2">
+                        <i class="fa-solid fa-scroll text-yellow-500"></i> คำทำนายประจำปีนี้
+                    </h3>
+                    <p id="predictionText" class="text-white/95 text-base sm:text-lg leading-relaxed bg-black/30 p-5 rounded-xl border border-red-900/30">
+                        -- ข้อความคำทำนาย --
+                    </p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="text-center text-xs text-red-300/60 mt-12 py-4">
+        <p>© ตำราพรหมชาติโบราณ - แอปพลิเคชันทำนายดวงชะตาประจำปีเกิด</p>
+    </footer>
+
+    <script>
+        // Data for 12 Promchat Slots (Index 0-11 corresponds to Clock positions starting from bottom)
+        // Position order in 12-hour clock (Bottom = 6 o'clock is index 0: เจดีย์)
+        const promchatData = [
+            {
+                id: 1,
+                name: "เจดีย์",
+                icon: "fa-gopuram",
+                angle: 90, // 6 o'clock (Bottom)
+                description: "ชะตาของท่านในปีนี้ ท่านจะได้ใช้ชีวิตอย่างร่มเย็นเป็นสุข จะมีแต่ความสุขกายสบายใจ จะได้ทำบุญกุศลในศาสนา ปรปรารถนาสิ่งใดจะได้สมดั่งหวังทุกประการ"
+            },
+            {
+                id: 2,
+                name: "ฉัตรเงิน",
+                icon: "fa-chess-king",
+                angle: 120, // 5 o'clock
+                description: "ชะตาของท่านในปีนี้ ท่านจะมีสุข จะมีโชคลาภเงินทองมากมาย จะมีผู้ใหญ่อุปถัมภ์ค้ำจุน ถ้าทำราชการหรือค้าขาย ก็จะมีความเจริญก้าวหน้ายิ่งขึ้น"
+            },
+            {
+                id: 3,
+                name: "คนคอขาด",
+                icon: "fa-user-ninja",
+                angle: 150, // 4 o'clock
+                description: "ชะตาของท่านในปีนี้ ท่านจะได้รับความเดือดร้อน จะได้รับความร้อนใจต่าง ๆ ซึ่งจะมีผู้ทำให้แก่ท่าน และจะได้รับความทุกข์ยากลำบาก ทำให้ท่านต้องเสียทรัพย์สินเงินทองอยู่เสมอ"
+            },
+            {
+                id: 4,
+                name: "เรือนหลวง",
+                icon: "fa-vihara",
+                angle: 180, // 3 o'clock
+                description: "ชะตาของท่านในปีนี้ ท่านจะได้รับแต่ความสุขสบาย มีความเจริญก้าวหน้าในกิจการทุกอย่าง ท่านจะมีโชคลาภ ได้เงินทอง จะมีผู้อุปถัมภ์อย่างดียิ่ง พวกศัตรูที่คิดร้ายจะแพ้ภัยตัวเอง"
+            },
+            {
+                id: 5,
+                name: "ปราสาททอง",
+                icon: "fa-place-of-worship",
+                angle: 210, // 2 o'clock
+                description: "ชะตาของท่านในปีนี้ ถ้าเป็นโสดจะได้พบเนื้อคู่ ชะตาชีวิตของท่านจะได้พบแต่ความสุข เจริญก้าวหน้า กิจการที่ทำจะได้ผลประโยชน์แก่ท่านเป็นที่พึงใจ จะสมความปรารถนาทุกประการ จะได้สัตว์ 4 เท้า 2 เท้า ถ้าค้าขายจะร่ำรวย"
+            },
+            {
+                id: 6,
+                name: "ราหู",
+                icon: "fa-mask",
+                angle: 240, // 1 o'clock
+                description: "ชะตาของท่านในปีนี้ ท่านจะได้รับความร้อนอกร้อนใจ จะเป็นถ้อยความผู้อื่นที่ทำให้ท่านได้รับความร้อนใจอยู่เสมอ ทำให้ท่านต้องเสียทรัพย์สินเงินทอง จะเกิดเป็นปากเสียงกับเพื่อนบ้าน จะพบกับความวุ่นวายอย่างไม่รู้จบ และจะเกิดเจ็บป่วยขึ้นแก่ท่าน"
+            },
+            {
+                id: 7,
+                name: "ฉัตรทอง",
+                icon: "fa-crown",
+                angle: 270, // 12 o'clock (Top)
+                description: "ชะตาของท่านในปีนี้ ท่านจะได้ประสบโชคลาภ มั่งมีด้วยทรัพย์สินเงินทอง พร้อมด้วยลาภยศมิตรสหาย จะมีผู้ใหญ่คอยให้ความอุปถัมภ์เป็นอย่างดี ชะตาชีวิตของท่านในปีนี้ จะมีแต่ความสุขความเจริญสบายใจ"
+            },
+            {
+                id: 8,
+                name: "เทวดาขี่เต่า",
+                icon: "fa-dragon",
+                angle: 300, // 11 o'clock
+                description: "ชะตาของท่านในปีนี้ ท่านจะมีความสุขพอประมาณ การเงินการทองพอมีใช้มีจ่าย จะทำอะไรจงคิดให้รอบคอบเสียก่อน มิฉะนั้นจะเกิดผลผิดพลาดขึ้นได้ และจะทำให้เดือดร้อนใจ"
+            },
+            {
+                id: 9,
+                name: "คนต้องขื่อคา",
+                icon: "fa-handcuffs",
+                angle: 330, // 10 o'clock
+                description: "ชะตาของท่านในปีนี้ จัดว่าชะตาตกอยู่ในฐานะมิสู้ดี จงมีความระวังในญาติพี่น้อง จะนำความเดือดร้อนใจมาให้ คนรักมักจะเอาใจออกห่าง ให้ระวังอันตราย เร่งจำศีลภาวนา จงทำบุญกุศลสะเดาะเคราะห์ อย่าเดินทางไกล จะได้รับโทษทัณฑ์อาญา"
+            },
+            {
+                id: 10,
+                name: "พ่อหมอ",
+                icon: "fa-user-doctor",
+                angle: 0, // 9 o'clock
+                description: "ชะตาของท่านในปีนี้ จะพบผู้ใหญ่อุปถัมภ์ค้ำชูแก่ท่าน ให้ยศศักดิ์ ท่านจะมีความสุขเจริญก้าวหน้า จะมีโชคลาภมาสู่ท่าน เป็นที่พึงใจยิ่ง โพยภัยมิได้มีมาพ้องพานเลย"
+            },
+            {
+                id: 11,
+                name: "แม่มด",
+                icon: "fa-hat-wizard",
+                angle: 30, // 8 o'clock
+                description: "ชะตาของท่านในปีนี้ ท่านจะได้พบผู้เฒ่าเจ้านายที่มีความค้ำชูให้ท่านได้พบกับความสุขความเจริญ คำพูดของท่านจะเป็นที่ไว้เนื้อเชื่อใจแก่คนทั้งหลาย จะไปแห่งใดมีแต่คนรักใคร่ จะมีผู้นำโชคลาภมาให้แต่ไม่มากนัก ท่านจะต้องเหนื่อยกายและใจบ้าง"
+            },
+            {
+                id: 12,
+                name: "นาคราช",
+                icon: "fa-staff-snake",
+                angle: 60, // 7 o'clock
+                description: "ชะตาของท่านในปีนี้ จัดว่าร้าย จงระวังจะเกิดพยาธิ การเจ็บไข้ได้รับความเจ็บปวด เลือดจะออกจากตัว ให้เกรงเขี้ยวงาและของมีคม จะมีผู้ปองร้าย จงจำศีลภาวนา อย่าเบียดเบียนสัตว์ ทุกข์จะบรรเทาโทษแล"
+            }
+        ];
+
+        function initWheel() {
+            const slotsWrapper = document.getElementById('slotsWrapper');
+            slotsWrapper.innerHTML = '';
+            
+            const isMobile = window.innerWidth < 640;
+            const radius = isMobile ? 128 : 225; // Radius from center in px
+
+            promchatData.forEach((item, index) => {
+                const slot = document.createElement('div');
+                slot.className = 'wheel-slot';
+                slot.id = `slot-${index}`;
+                slot.setAttribute('onclick', `selectSlotDirectly(${index})`);
+
+                // Convert degree angle to radians for placement
+                const rad = (item.angle * Math.PI) / 180;
+                const x = Math.cos(rad) * radius;
+                const y = Math.sin(rad) * radius;
+
+                // Position relative to center (50%, 50%)
+                slot.style.left = `calc(50% + ${x}px)`;
+                slot.style.top = `calc(50% + ${y}px)`;
+
+                slot.innerHTML = `
+                    <i class="fa-solid ${item.icon} text-yellow-400 text-xs sm:text-base mb-0.5"></i>
+                    <span class="text-[9px] sm:text-xs text-yellow-100 font-bold leading-tight text-center px-1">${item.name}</span>
+                `;
+
+                slotsWrapper.appendChild(slot);
+            });
+        }
+
+        // Handle Responsive Resize for Wheel Radius
+        window.addEventListener('resize', initWheel);
+
+        function calculateFortune(e) {
+            if(e) e.preventDefault();
+
+            const ageInput = document.getElementById('ageInput').value;
+            const gender = document.querySelector('input[name="gender"]:checked').value;
+
+            if (!ageInput || ageInput < 1) return;
+
+            const age = parseInt(ageInput);
+            
+            // Promchat Algorithm:
+            // Start at index 0 (เจดีย์)
+            // Male: clockwise (0 -> 1 -> 2 ... -> 11)
+            // Female: counter-clockwise (0 -> 11 -> 10 ... -> 1)
+            let targetIndex = 0;
+
+            if (gender === 'male') {
+                targetIndex = (age - 1) % 12;
+            } else {
+                targetIndex = (12 - ((age - 1) % 12)) % 12;
+            }
+
+            highlightSlotAndShowResult(targetIndex, age, gender);
+        }
+
+        function highlightSlotAndShowResult(targetIndex, age, gender) {
+            // Remove previous active highlights
+            document.querySelectorAll('.wheel-slot').forEach(el => {
+                el.classList.remove('active-slot');
+            });
+
+            // Highlight target slot
+            const targetSlot = document.getElementById(`slot-${targetIndex}`);
+            if(targetSlot) {
+                targetSlot.classList.add('active-slot');
+            }
+
+            // Prepare Result Content
+            const resultData = promchatData[targetIndex];
+            const genderText = gender === 'male' ? 'ชาย' : 'หญิง';
+            const directionText = gender === 'male' ? 'เวียนขวา (ตามเข็ม)' : 'เวียนซ้าย (ทวนเข็ม)';
+
+            document.getElementById('resultTitle').textContent = `ตก "${resultData.name}"`;
+            document.getElementById('userInfoSummary').textContent = `เพศ${genderText} อายุ ${age} ปี`;
+            document.getElementById('calculationPath').textContent = 
+                `เพศ${genderText} เริ่มนับจากเจดีย์ (1) ${directionText} ครบ ${age} ปี ตกที่ตำแหน่ง "${resultData.name}"`;
+            document.getElementById('predictionText').textContent = resultData.description;
+
+            // Show Result Box with Animation
+            const resultSection = document.getElementById('resultSection');
+            resultSection.classList.remove('hidden');
+            setTimeout(() => {
+                resultSection.classList.remove('opacity-0', 'translate-y-4');
+                resultSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 50);
+        }
+
+        // Direct Slot Click Handler
+        function selectSlotDirectly(index) {
+            const data = promchatData[index];
+            document.querySelectorAll('.wheel-slot').forEach(el => el.classList.remove('active-slot'));
+            document.getElementById(`slot-${index}`).classList.add('active-slot');
+
+            document.getElementById('resultTitle').textContent = `ตก "${data.name}"`;
+            document.getElementById('userInfoSummary').textContent = `คลิกเลือกตำแหน่งโดยตรง`;
+            document.getElementById('calculationPath').textContent = `คุณคลิกเลือกตำแหน่ง "${data.name}" เพื่ออ่านคำทำนายประจำดวงชะตานี้`;
+            document.getElementById('predictionText').textContent = data.description;
+
+            const resultSection = document.getElementById('resultSection');
+            resultSection.classList.remove('hidden');
+            setTimeout(() => {
+                resultSection.classList.remove('opacity-0', 'translate-y-4');
+                resultSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 50);
+        }
+
+        // Initialize Wheel on Load
+        window.onload = function() {
+            initWheel();
+        };
+    </script>
+</body>
+</html>
